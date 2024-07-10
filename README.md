@@ -21,11 +21,11 @@ Goober Studios was formed for EGD-380-35: Advanced Seminar in Game Development (
 ### 👥 Teammates
 **Nate**
 <br>
-> Narrative, Art
+> Art
 
 **Laura**
 <br>
-> Programming
+> Narrative
 
 **Brayden**
 <br>
