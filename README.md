@@ -2,7 +2,7 @@
 
 ### 📜Overview
 Goober Studios was formed for EGD-380-35: Advanced Seminar in Game Development (Summer 2024)
-Here you will find:
+<br> Here you will find:
 - "Projects" which will contain taskboards for each sprint
 - "Repository" which contains the Unity project we are working in, and any additional files we would like to share
 <br>
