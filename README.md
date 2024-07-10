@@ -7,20 +7,17 @@ Here you will find:
 - "Repository" which contains the Unity project we are working in, and any additional files we would like to share
 
 <br>
-
 ### 🔗Quick Links
 - [Miro Board](https://miro.com/app/board/uXjVK_VPBF4=/?share_link_id=110319730173)
 - [Canvas](https://champlain.instructure.com/courses/2270592)
 
 <br>
-
 ### 📊 Taskboards
 - [Sprint 3](https://github.com/users/braydenriddell/projects/1)
 - Sprint 4
 - Sprint 5
 
 <br>
-
 ### 👥 Teammates
 **Nate**
 <br>
