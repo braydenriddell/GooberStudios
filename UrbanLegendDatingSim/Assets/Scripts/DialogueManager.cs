@@ -11,41 +11,35 @@ public class DialogueManager : MonoBehaviour
     private static DialogueManager instance;
 
     public GameManager gameManager;
+    public TextAsset loadGlobalsJSON;
 
+    private Coroutine typewritterEffectCoroutine;
+    private DialogueVariables variablesScript;
+
+    [Header("UI Elements")]
     public GameObject dialogueBox;
     public TextMeshProUGUI text;
     public Story currentStory;
     public GameObject continueButton;
     public GameObject mainText;
-
-    public string currentPath;
-    public string currentName;
-
-    public GameObject choicePrevTextBox;
-    public TextMeshProUGUI choicePrevText;
     public GameObject[] choices;
     private TextMeshProUGUI[] choicesText;
-
     public TextMeshProUGUI nameText;
+    public GameObject clickanywhere_skip;
+    public GameObject clickanywhere_next;
 
-    private const string TAG_NAME = "name";
-    private const string TAG_CHOICEKNOT = "choice";
+    [Header("Options")]
+    public SpriteRenderer character;
+    public float typewritterSpeed = 0.04f;
+    public float punctuationSpeed = 0.1f;
 
     public bool dialoguePlaying;
     public bool canContinue = false;
     private bool skipButtonPressed = false;
     private bool dialogueTyping = false;
 
-    public float typewritterSpeed = 0.04f;
-    public float punctuationSpeed = 0.1f;
-
-    private Coroutine typewritterEffectCoroutine;
-
-    private DialogueVariables variablesScript;
-    public TextAsset loadGlobalsJSON;
-
-    public GameObject clickanywhere_skip;
-    public GameObject clickanywhere_next;
+    private const string TAG_NAME = "name";
+    private const string TAG_SPRITE = "sprite";
 
 
     private void Awake()
@@ -99,19 +93,19 @@ public class DialogueManager : MonoBehaviour
         }
 
         //Audio
-        if (dialogueTyping == true && skipButtonPressed == false)
-        {
+        //if (dialogueTyping == true && skipButtonPressed == false)
+        //{
             //FindObjectOfType<AudioManager>().Play("DialogueWriting");
-            if (FindObjectOfType<AudioManager>().CheckIfPlaying("DialogueWriting") == false)
-            {
-                FindObjectOfType<AudioManager>().Play("DialogueWriting");
-            }
+            //if (FindObjectOfType<AudioManager>().CheckIfPlaying("DialogueWriting") == false)
+            //{
+            //    FindObjectOfType<AudioManager>().Play("DialogueWriting");
+            //}
             //Debug.Log("dialogue audio");
-        }
-        else
-        {
-            FindObjectOfType<AudioManager>().Stop("DialogueWriting");
-        }
+        //}
+        //else
+        //{
+            //FindObjectOfType<AudioManager>().Stop("DialogueWriting");
+        //}
     }
 
     public void ClickAnywhereSkip()
@@ -168,16 +162,12 @@ public class DialogueManager : MonoBehaviour
         {
             choiceButton.SetActive(false);
         }
-        choicePrevTextBox.SetActive(false);
         text.text = "";
-        //if (!gameManager.startDialogue)
-        //{
-        //    gameManager.canObserve = true;
-        //}
         clickanywhere_skip.SetActive(false);
+        Debug.Log("Exit Dialogue");
     }
 
-    public void ChoicesDisplay()
+    private void ChoicesDisplay()
     {
         List<Choice> currentChoices = currentStory.currentChoices;
 
@@ -191,27 +181,22 @@ public class DialogueManager : MonoBehaviour
         int index = 0;
         foreach (Choice choice in currentChoices)
         {
-            //Disables continue button and main text if there are choices
+            //Disables continue button if there are choices
             continueButton.gameObject.SetActive(false);
+            clickanywhere_skip.SetActive(false);
             clickanywhere_next.SetActive(false);
-            mainText.gameObject.SetActive(false);
 
             choices[index].gameObject.SetActive(true);
             choicesText[index].text = choice.text;
             index++;
         }
 
-        //Display prev text if choices are enabled
-        if (choices[0].activeSelf || choices[1].activeSelf || choices[2].activeSelf)
-        {
-            choicePrevTextBox.SetActive(true);
-        }
-
-        //Disable reamining choices not being used
+        //DIsable reamining choices not being used
         for (int i = index; i < choices.Length; i++)
         {
             choices[i].gameObject.SetActive(false);
         }
+
         StartCoroutine(ChoiceSelect());
     }
 
@@ -226,8 +211,6 @@ public class DialogueManager : MonoBehaviour
     {
         if (canContinue == true)
         {
-            choicePrevTextBox.SetActive(false);
-            mainText.gameObject.SetActive(true);
             currentStory.ChooseChoiceIndex(choiceIndex);
             DialogueContinue();
         }
@@ -251,10 +234,14 @@ public class DialogueManager : MonoBehaviour
             {
                 case TAG_NAME:
                     nameText.text = tagValue;
-                    currentName = tagValue;
                     break;
-                case TAG_CHOICEKNOT:
-                    currentPath = tagValue;
+                case TAG_SPRITE:
+                    if (tagValue == "null")
+                    {
+                        character.sprite = null;
+                    }
+                    character.sprite = Resources.Load<Sprite>(tagValue);
+                    //avatarImage.sprite = avatarSprite;
                     break;
                 default:
                     Debug.Log("Tag not set up in handler: " + tag);
@@ -265,7 +252,6 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator TypewritterEffect(string line)
     {
-
         //Clear dialogue text box
         text.text = line;
         text.maxVisibleCharacters = 0;
@@ -292,7 +278,6 @@ public class DialogueManager : MonoBehaviour
                 skipButtonPressed = false;
                 dialogueTyping = false;
                 text.maxVisibleCharacters = line.Length;
-                Debug.Log("typewritter effect skipped!");
                 break;
             }
 
@@ -312,16 +297,11 @@ public class DialogueManager : MonoBehaviour
         //Activate continue assets
         continueButton.gameObject.SetActive(true);
         clickanywhere_next.SetActive(true);
+        ChoicesDisplay();
 
         //Continue after message is typed out
         canContinue = true;
         dialogueTyping = false;
-
-        //Keep choice previous text up to date
-        if (line.Contains("placeholder_text") == false && currentName != "")
-        {
-            choicePrevText.text = "<b>" + currentName + "</b>" + "\n" + line;
-        }
     }
 
     //Gets variable in global ink file

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,39 +11,20 @@ public class GameManager : MonoBehaviour
     int vSync = 1;
 
     float fadeTime1 = 0.016f;
-    float fadeTime3 = 0.1f;
 
     public DialogueManager dialogueManager;
 
     [Header("UI Elements")]
     public GameObject uiPanel;
-    public GameObject gameScene;
-
     public GameObject dialoguePanel;
-
-    public GameObject trapperVisitor;
+    [SerializeField] GameObject blackScreen;
 
     [Header("Bools")]
-    public bool complete_rosary;
-    public bool complete_flag;
-    public bool complete_gun;
+    public bool shouldEnd;
+    bool ending = false;
 
 
-    [Header("Ink & Ending Vars")]
-    public GameObject endScene;
-    public GameObject endscreenUI;
-    public GameObject endtextUI;
-    public GameObject endbuttonsUI;
-    public TextMeshProUGUI endText;
-    public string endstate = "";
-
-    public int trapper_ending = 0;
-
-    public SpriteRenderer foxSprite;
-    public Sprite fox_dead;
     public TextAsset introJSON;
-    public TextAsset end_neutralJSON;
-    public TextAsset end_goodJSON;
 
     private void Awake()
     {
@@ -52,60 +34,39 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(StartQuotes());
-        endScene.SetActive(false);
+        DialogueManager.GetInstance().DialogueStart(introJSON);
+        Invoke("MothmanIntro", 2);
+        //StartCoroutine(FadeOut(blackScreen, 4f));
     }
 
     void Update()
     {
-        //visitorIntroduced = ((Ink.Runtime.BoolValue)DialogueManager.GetInstance().GetVariableState("visitorIntroduced")).value;
+        shouldEnd = ((Ink.Runtime.BoolValue)DialogueManager.GetInstance().GetVariableState("end")).value;
+
+        if (shouldEnd && !ending)
+        {
+            StartCoroutine(EndGame());
+        }
     }
 
-    private IEnumerator StartQuotes()
+
+    public void MothmanIntro()
     {
-        int delayTime = 8;
-
-        //Fade in quotes
-        yield return new WaitForSeconds(2);
-       //StartCoroutine(FadeIn(quotesPanel, fadeTime1));
-
-        //Wait for seconds
-        yield return new WaitForSeconds(delayTime);
-
-        //Enable Game Scene
-        //cannotTranscriptButton.SetActive(true);
-        gameScene.SetActive(true);
-
-        //Fade in game UI
-        StartCoroutine(FadeIn(uiPanel, fadeTime1));
-
-        //Start first cut scene
-        FindObjectOfType<AudioManager>().Play("Campfire");
-        FindObjectOfType<AudioManager>().Play("Crickets");
-
-        yield return new WaitForSeconds(2);
-    }
-
-    public IEnumerator TrapperIntro()
-    {
-        Debug.Log("Trapper intro cut scene");
-        yield return new WaitForSeconds(2);
+        Debug.Log("Mothman intro");
 
         //Dialogue start
         DialogueManager.GetInstance().DialogueStart(introJSON);
-        //enableTrapperItems = true;
     }
 
-
-    public void DialogueMode()
+    IEnumerator EndGame()
     {
-
-        //Enable dialogue mode
-        StartCoroutine(FadeIn(dialoguePanel, fadeTime3));
-        //if (dialogueManager.canContinue)
-        //{
-        //    dialogueManager.ChoicesDisplay();
-        //}
+        ending = true;
+        yield return new WaitForSeconds(2);
+        blackScreen.SetActive(true);
+        //StartCoroutine(FadeIn(blackScreen, 2f));
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("EndScreen");
+        yield return null;
     }
 
 
@@ -137,6 +98,7 @@ public class GameManager : MonoBehaviour
                 yield return null;
             }
         }
+        yield return null;
     }
 
     private IEnumerator FadeOut(GameObject obj, float fadeTime)
@@ -165,46 +127,16 @@ public class GameManager : MonoBehaviour
                 yield return null;
             }
         }
+        yield return null;
     }
 
-
-    public IEnumerator EndGame()
-    {
-        //Disable dialogue mode
-        StartCoroutine(FadeOut(dialoguePanel, fadeTime3));
-        yield return new WaitForSeconds(3);
-        endScene.SetActive(true);
-
-        //Fade in ending screen
-        endScene.SetActive(true);
-        StartCoroutine(FadeIn(endscreenUI, fadeTime1));
-        StartCoroutine(FadeOut(gameScene, fadeTime1));
-        StartCoroutine(FadeOut(uiPanel, fadeTime1));
-
-        if (endstate == "neutral")
-        {
-            endText.text = "Neutral ending achieved.";
-        }
-        else if (endstate == "good")
-        {
-            endText.text = "Good ending achieved!";
-        }
-
-        yield return new WaitForSeconds(5);
-        StartCoroutine(FadeIn(endtextUI, fadeTime1));
-        gameScene.SetActive(false);
-
-        yield return new WaitForSeconds(4);
-        StartCoroutine(FadeIn(endbuttonsUI, fadeTime1));
-    }
-
-    public void PlayButtonSound()
+    /*public void PlayButtonSound()
     {
         FindObjectOfType<AudioManager>().Play("ButtonClick");
-    }
+    }*/
 
-    private void MoveObject(GameObject obj, GameObject objTarget, float speed)
+    /*private void MoveObject(GameObject obj, GameObject objTarget, float speed)
     {
         obj.transform.position = Vector2.MoveTowards(obj.transform.position, objTarget.transform.position, speed * Time.deltaTime);
-    }
+    }*/
 }
