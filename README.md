@@ -14,8 +14,8 @@ Goober Studios was formed for EGD-380-35: Advanced Seminar in Game Development (
 
 ### 📊 Taskboards
 - [Sprint 3](https://github.com/users/braydenriddell/projects/1)
-- Sprint 4
-- Sprint 5
+- [Sprint 4](https://github.com/users/braydenriddell/projects/2)
+- [Sprint 5 (Finals Week)](https://github.com/users/braydenriddell/projects/3)
 <br>
 
 ### 👥 Teammates
