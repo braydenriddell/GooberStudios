@@ -29,4 +29,4 @@ Goober Studios was formed for EGD-380-35: Advanced Seminar in Game Development (
 
 **Brayden**
 <br>
-> Programming, Game Design
+> Programming, Design
