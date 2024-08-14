@@ -73,9 +73,9 @@ Murr…#name:Mothman
 <i><color="grey">Or maybe he’s bringing you to a hospital? Does he even know what a hospital is?
 
 <i><color="yellow">Anyways, do you even follow him?
-+ [Yes...]
-        -> mothman_follow
 + [YES!!!]
+        -> mothman_follow
++ [Yes...]
         -> mothman_follow
 
 === mothman_follow ===
@@ -95,7 +95,7 @@ Murr?#name:Mothman
 
 <i><color="grey">He seems to have noticed you staring at him. And now he looks very confused.#name: 
 
-<i><color="grey">QUICK. DISTRACT HIM SO HE DOESN’T THINK YOU’RE WEIRD!
+<i><color="yellow">QUICK. DISTRACT HIM SO HE DOESN’T THINK YOU’RE WEIRD!
 + [Distract with flashlight]
         -> mothman_distract
 
@@ -146,7 +146,7 @@ Murr :(#sprite:mothman_covered #name:Mothman
 
 <i><color="grey">Awww, he seems sad about failing to protect you.
 
-<i><color="grey">But you know how to make him feel better!
+<i><color="yellow">But you know how to make him feel better!
 + [Revenge!]
         -> mothman_revenge
 + [Kiss him!]
@@ -188,12 +188,12 @@ Won’t you come with?#name:You
 
 <i><color="grey">Eh, maybe you’re an exception.
 
-<i><color="grey">A fucking awesome exception, duh!
+<i><color="yellow">A fucking awesome exception, duh!
 
-+ [Go to the hospital.]
-        -> mothman_healHospital
 + [Fuck the hospital.]
         -> mothman_die
++ [Go to the hospital.]
+        -> mothman_healHospital
 
 === mothman_healHospital ===
 <i><color="grey">Your hearts beat in sync as he holds you in his arms.
