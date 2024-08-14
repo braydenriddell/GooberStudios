@@ -196,12 +196,12 @@ Won’t you come with?#name:You
         -> mothman_healHospital
 
 === mothman_healHospital ===
-<i><color="grey">Your hearts beat in sync as he holds you in his arms.
+<i><color="grey">The doctors do fix your broken bones.
 
 ~ end = true
 -> END
 
 === mothman_die ===
-<i><color="grey">The doctors do fix your broken bones.
+<i><color="grey">Your hearts beat in sync as he holds you in his arms.
 ~ end = true
 -> END
